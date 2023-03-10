@@ -1,23 +1,40 @@
 <script>
   const brewTypes = [
-    { id: "filter", label: "pour over / drip coffee", ratio: 0.06 },
-    { id: "espresso", label: "espresso", ratio: 0.5 }
+    { id: "filter", label: "pour over / drip coffee", ratio: 0.06, default: 1000 },
+    { id: "espresso", label: "espresso", ratio: 0.5, default: 36 }
   ];
-
-  let ratio = 0.06;
 
   let waterml = 1000;
   let coffeeg = 60;
 
-  $: ratio, waterToCoffee();
-  $: waterml, waterToCoffee();
-  $: coffeeg, coffeeToWater();
+  let selectedBrewType = 0;
+  let ratio = 0.06;
+
+  $: selectedBrewType, onBrewTypeChange();
+
+  function onBrewTypeChange() {
+    let brewType = brewTypes[selectedBrewType];
+    if (!waterml) {
+      waterml = brewType["default"];
+    }
+
+    ratio = brewType["ratio"];
+    waterToCoffee();
+  }
 
   function waterToCoffee() {
+    if (waterml == null) {
+      coffeeg = null;
+      return;
+    }
     coffeeg = parseFloat((waterml * ratio).toFixed(2));
   }
 
-  function coffeeToWater(e) {
+  function coffeeToWater() {
+    if (coffeeg == null) {
+      waterml = null;
+      return;
+    }
     waterml = parseFloat((coffeeg / ratio).toFixed(2));
   }
 </script>
@@ -25,15 +42,15 @@
 <div class="container mx-auto py-4 ">
   <div class="text-center">
     <div class="inline-flex gap-3 mx-auto">
-      {#each brewTypes as bt}
+      {#each brewTypes as bt, i}
         <div class="flex items-center">
           <input
             id="bt-{bt.id}"
             name="brewtype-list"
             type="radio"
-            value={bt.ratio}
+            value={i}
             class="hidden peer"
-            bind:group={ratio}
+            bind:group={selectedBrewType}
           />
           <label
             for="bt-{bt.id}"
@@ -48,11 +65,14 @@
     </div>
   </div>
 
-  <div class="text-center pt-4">
-    <div class="inline-flex flex-wrap gap-3 ">
+  <div class="py-3" />
+
+  <div class="text-center">
+    <div class="inline-flex flex-wrap gap-3 justify-around">
       <div class="flex">
         <input
           bind:value={waterml}
+          on:input={waterToCoffee}
           type="number"
           class="rounded-none rounded-l-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
@@ -65,6 +85,7 @@
       <div class="flex">
         <input
           bind:value={coffeeg}
+          on:input={coffeeToWater}
           type="number"
           class="rounded-none rounded-l-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
