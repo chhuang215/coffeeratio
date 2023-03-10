@@ -1,6 +1,8 @@
 import preprocess from "svelte-preprocess";
 import adapter from "@sveltejs/adapter-static";
 
+const dev = process.env.NODE_ENV === 'development';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   kit: {
@@ -15,7 +17,14 @@ const config = {
       fallback: null,
       precompress: false,
       strict: true
-    })
+    }),
+    // prerender: {
+    //   default: true,
+    // },
+    // trailingSlash: 'always',
+    paths: {
+      base: dev ? '' : '/coffeeratio'
+    }
   },
 
   preprocess: [
