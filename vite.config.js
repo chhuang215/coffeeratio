@@ -3,8 +3,12 @@ import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 import { defineConfig } from "vite";
 
 const dev = process.env.NODE_ENV === 'development';
+const base = dev ? "" : "/coffeeratio";
 
 export default defineConfig({
+  server: {
+    base: base,
+  },
   plugins: [sveltekit(), SvelteKitPWA(
     {
       registerType: 'autoUpdate',
@@ -23,39 +27,39 @@ export default defineConfig({
         "short_name": "CoffeeRatio",
         "icons": [
           {
-            "src": "/icons/icon-128x128.png",
+            "src": base + "/icons/icon-128x128.png",
             "sizes": "128x128",
             "type": "image/png"
           },
           {
-            "src": "/icons/icon-144x144.png",
+            "src": base + "/icons/icon-144x144.png",
             "sizes": "144x144",
             "type": "image/png"
           },
           {
-            "src": "/icons/icon-152x152.png",
+            "src": base + "/icons/icon-152x152.png",
             "sizes": "152x152",
             "type": "image/png"
           },
           {
-            "src": "/icons/icon-192x192.png",
+            "src": base + "/icons/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
           },
           {
-            "src": "/icons/icon-256x256.png",
+            "src": base + "/icons/icon-256x256.png",
             "sizes": "256x256",
             "type": "image/png"
           },
           {
-            "src": "/icons/icon-512x512.png",
+            "src": base + "/icons/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
           }
         ],
         // "start_url": "index.html",
-        "start_url": "/",
-        "scope": "/",
+        // "start_url": "/",
+        // "scope": "/",
         "display": "standalone",
         "background_color": "#3E4EB8",
         "theme_color": "#2F3BA2"
