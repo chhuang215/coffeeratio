@@ -17,6 +17,7 @@
           //    r.update()
           // }, 20000 /* 20s for testing purposes */)
           console.log(`SW Registered: ${r}`);
+          console.log(r);
         },
         onRegisterError(error) {
           console.log("SW registration error", error);
@@ -29,11 +30,11 @@
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
 
-  $: {
-    console.log(pwaInfo);
-    console.log(pwaInfo ? pwaInfo.webManifest.href : "");
-    // console.log(webManifest);
-  }
+  // $: {
+  //   console.log(pwaInfo);
+  //   console.log(pwaInfo ? pwaInfo.webManifest.href : "");
+  //   console.log(webManifest);
+  // }
 </script>
 
 <!-- <nav>
@@ -45,7 +46,8 @@
 <svelte:head>
   <title>CoffeeRatio</title>
   {#if webManifest}
-    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="manifest" href={pwaInfo.webManifest.href.replace(/^\/+/, "")} />
+    <!-- {@html webManifest} -->
   {/if}
 </svelte:head>
 <!-- <svelte:head>
