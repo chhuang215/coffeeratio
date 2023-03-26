@@ -7,22 +7,33 @@ const base = dev ? "" : "/coffeeratio";
 // const base = "";
 
 export default defineConfig({
-  server: {
-    base: base
+  // server: {
+  //   base: base
+  // },
+  build: {
+    minify: false,
   },
   plugins: [
     sveltekit(),
     SvelteKitPWA(
       {
+        kit: {
+          base: base,
+          trailingSlash: 'always',
+        },
         registerType: "autoUpdate",
-        // trailingSlash: 'always',
         // devOptions: {
         //   enabled: true
         // },
         workbox: {
-          globPatterns: ["**/*.{js,css,html,ico,png,svg}"]
+          globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+          globIgnores: [
+            "**/node_modules/**/*",
+            "server/**/*"
+            // "server/sw.js",
+            // "server/workbox-*.js"
+          ],
         },
-        // base: dev ? '' : '/coffeeratio'
         manifest: {
           name: "CoffeeRatio",
           short_name: "CoffeeRatio",
@@ -57,41 +68,10 @@ export default defineConfig({
               sizes: "512x512",
               type: "image/png"
             }
-            // ,
-            // {
-            //   "src": base + "/icons/icon-128x128.png",
-            //   "sizes": "128x128",
-            //   "type": "image/png"
-            // },
-            // {
-            //   "src": base + "/icons/icon-144x144.png",
-            //   "sizes": "144x144",
-            //   "type": "image/png"
-            // },
-            // {
-            //   "src": base + "/icons/icon-152x152.png",
-            //   "sizes": "152x152",
-            //   "type": "image/png"
-            // },
-            // {
-            //   "src": base + "/icons/icon-192x192.png",
-            //   "sizes": "192x192",
-            //   "type": "image/png"
-            // },
-            // {
-            //   "src": base + "/icons/icon-256x256.png",
-            //   "sizes": "256x256",
-            //   "type": "image/png"
-            // },
-            // {
-            //   "src": base + "/icons/icon-512x512.png",
-            //   "sizes": "512x512",
-            //   "type": "image/png"
-            // }
           ],
-          "start_url": "index.html",
-          // "start_url": "/",
-          // "scope": "/",
+          start_url: "/coffeeratio/",
+          // "start_url": "./",
+          scope: "https://chhuang215.github.io/coffeeratio/",
           display: "standalone",
           background_color: "#3E4EB8",
           theme_color: "#2F3BA2"
